@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="css/login.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery-3.4.1.js" ></script>
+</head>
+<body>
+<div class="loginBg">
+<form id="login_form">
+    <div style="margin:128px 0 0 400px"><input id="username" name="userName" type="text" class="user"></div>
+    <div style="margin:8px 0 0 400px"><input id="password" name="password" type="password" class="password"></div>
+    <div style="margin:22px 0 0 345px"><input id="login_btn" type="button"  class="loginButton"></div>
+    <div style="margin:22px 0 0 345px"><input id="register_btn" type="button" value="注册"></div>
+</form>
+</div>
+<script type="text/javascript">
+    $('#login_btn').click(function () {
+        $(this).attr('disabled','disabled');
+        var data = {
+            "userName":$('#username').val(),
+            "password": $("#password").val(),
+        }
+
+        $.ajax({
+            type:'post',
+            datatype:'text',
+            url:'/login/userLogin',
+            data:JSON.stringify(data),
+            contentType:'application/json',
+            success:function (data) {
+                if(data.code==1){
+                    $(window).attr('location','/index.html');
+                }
+            }
+        });
+    });
+    $('#register_btn').click(function () {
+        console.log('aaaaaa')
+        $(window).attr('location','/register.html');
+    })
+</script>
+</body>
+</html>

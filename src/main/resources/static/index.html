@@ -1,0 +1,156 @@
+<!DOCTYPE html >
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>All Here</title>
+<link href="css/index.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="js/jquery-3.4.1.js"></script>
+</head>
+
+<body>
+	<div>
+		<div class="top"></div>
+		<div style="margin:0 auto;width:1280px;">
+			<div style="background:#3c4959;width:161px;list-style:none;height:900px;float:left;">
+				<div class="name" style="padding:10px 0;"><a id="logout">注销</a></div>
+				<div style="text-align:center;padding:10px 0 10px;"><img src="images/head.jpg" width="69" height="68" alt=""/></div>
+				<div class="name">李曌</div>
+				<div class="name2">采购三部</div>
+				<div class="leftMenuSelect" eltype="menu"><a href="index.html">首页</a></div>
+				<div class="leftMenuUnselect" eltype="menu">法律法规</div>
+				<div class="downMenu" eltype="son_menu">
+					<li class="selected" eltype="menu" ellink="laws/list.html">国家法律</li>
+					<li eltype="menu" ellink="laws/list2.html">部门规章</li>
+					<li eltype="menu" ellink="laws/list3.html">地方法规</li>
+					<li eltype="menu" ellink="laws/list4.html">公司制度</li>
+					<li eltype="menu" ellink="laws/list5.html">必须招标规定</li>
+					<li eltype="menu" ellink="laws/list6.html">废止文件</li>
+				</div>
+				<div class="leftMenuUnselect" eltype="menu">案例库</div>
+				<div class="downMenu" eltype="son_menu">
+					<li class="selected" eltype="menu" ellink="cases/list2.html">一采</li>
+					<li eltype="menu" ellink="cases/list.html">总部</a></li>
+				</div>
+				<div class="leftMenuUnselect" eltype="menu">项目管理</div>
+				<div class="downMenu" eltype="son_menu">
+					<li class="selected" eltype="menu"  ellink="project/month.html">月报</li>
+					<!--<li eltype="menu"  ellink="project/report.html">核查通报</li>-->
+					<li eltype="menu"  ellink="project/process.html">项目进度表</li>
+				</div>
+				<div class="leftMenuUnselect" eltype="menu">班组实务</div>
+				<div class="downMenu" eltype="son_menu">
+					<li class="selected" eltype="menu" ellink="classwork/list.html">作业指导书</li>
+					<li eltype="menu" ellink="classwork/list2.html">工作台账</li>
+				</div>
+				<div class="leftMenuUnselect" eltype="menu">沟通平台</div>
+				<div class="downMenu" eltype="son_menu">
+					<li eltype="menu" ellink="building/building.html">通知公告</li>
+					<li eltype="menu" ellink="talk/list.html">留言板</li>
+					<li eltype="menu" ellink="building/building.html">线上直播</li>
+					<li eltype="menu" ellink="video/list.html">线上培训</li>
+					<li eltype="menu" ellink="building/building.html">点评投票</li>
+				</div>
+				<div class="leftMenuUnselect" eltype="menu">后台维护</div>
+				<div class="downMenu" eltype="son_menu">
+					<li eltype="menu" ellink="laws/maintain.html">法律法规</li>
+					<li eltype="menu" ellink="cases/cases_maintain.html">案例库</li>
+					<li eltype="menu" ellink="user/maintain.html">用户管理</li>
+					<li eltype="menu" ellink="video/list.html">线上培训</li>
+					<li eltype="menu" ellink="building/building.html">点评投票</li>
+				</div>
+				
+				
+				
+		  	</div>
+			<div style="background:#f3f3f3;width:1119px;list-style:none;float:right;">
+				<iframe id="list" name="list_frame" src="inner.html" frameborder="0" width="1119" height="900" scrolling="auto">
+						
+				</iframe>
+			</div>
+		</div>
+	</div>
+	<a href="laws/list2.html" id="content_link" target="list_frame"><span id="wrap_link"></span></a>
+	<script type="text/javascript">
+		$( document ).ready(function() {
+    		packUPAllSonMenu();
+		});
+		var packUPAllSonMenu=function(){
+			$( "*[eltype='menu']" ).each(function(){
+				var attr_eltype = $(this).next().attr('eltype');
+				if(typeof attr_eltype !== typeof undefined && attr_eltype !== false && attr_eltype=='son_menu'){
+					$(this).next().attr("style","display:none;");
+				}
+				
+			});
+		}
+		var linkToTarget=function(element){
+			console.log($(element).attr('class'));
+			if($(element).attr('class')=='selected'){
+				return;
+			}
+			var elLink = $(element).attr('ellink');
+			if(typeof elLink !== typeof undefined && elLink !== false){
+				$('#content_link').attr('href',elLink);
+				$('#wrap_link').trigger('click');
+			}
+
+		}
+		
+		$( "*[eltype='menu']" ).on('click',function(){
+			
+			var parentType = $(this).parent().attr('eltype');
+			
+			if(parentType=='son_menu'){
+				$(this).siblings().each(function(index,element){
+					if($(element).attr('eltype')=='menu'){
+						$(element).attr('class','');
+					}
+				});
+				linkToTarget(this);
+				$(this).attr('class','selected');
+				// 跳转内容frame链接
+				
+			}else{
+				$(this).siblings().each(function(index,element){
+					if($(element).attr('eltype')=='menu'){
+						$(element).attr('class','leftMenuUnselect');
+					}
+				});
+				$(this).attr('class','leftMenuSelect');
+
+				$("*[eltype='son_menu']").each(function(index,element){
+					$(element).attr('style','display:none;');
+				});
+			}
+
+
+			
+			if($(this).next().attr('eltype')=='son_menu'){
+				if($(this).next().attr("style")=='display:none;'){
+					$(this).next().attr("style","display:display;");
+					$(this).next().children("*[eltype='menu']").each(function(index,element){
+						$(element).attr('class','');
+					});
+				}else{
+					$(this).next().attr("style","display:none;");
+				}
+				
+			}
+			
+		});
+		$('#logout').click(function () {
+            $.ajax({
+                type:'get',
+                datatype:'text',
+                url:'/login/userLogout',
+                success:function (data) {
+                    console.log(data);
+                    if(data.code==1){
+                        $(window).attr('location','/login.html');
+                    }
+                }
+            });
+        })
+	</script>
+</body>
+</html>

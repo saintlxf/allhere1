@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>法律法规</title>
+    <script type="text/javascript" charset="utf-8" src="js/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="js/ueditor/ueditor.all.min.js"> </script>
+    <script type="text/javascript" charset="utf-8" src="js/ueditor/lang/zh-cn/zh-cn.js"></script>
+    <style type="text/css">
+        div{
+            width:100%;
+        }
+    </style>
+    <script type="text/javascript" src="js/jquery-3.4.1.js" ></script>
+</head>
+<body>
+    <div>
+        <h1>完整demo</h1>
+        <textarea id="editor" type="text/plain" style="width:1024px;height:500px;"></textarea>
+    </div>
+    <button id="submit"> 提交</button>
+<script>
+    var ue = UE.getEditor('editor');
+    $('#submit').click(function () {
+        var a = UE.getEditor('editor').getContent();
+        console.log(a);
+        UE.getEditor('editor').setContent('<p><span style="font-size: 18px;">人民广场<strong><span style="font-size: 24px;">大饼卷一切</span></strong></span></p><p><span style="font-size: 18px;"><strong><span style="font-size: 24px;">冷冷清清</span></strong></span></p><p><span style="font-size: 18px; font-family: 微软雅黑, &quot;Microsoft YaHei&quot;;"><strong><span style="font-size: 24px;">神秘</span></strong></span></p>')
+    })
+</script>
+</body>
+</html>

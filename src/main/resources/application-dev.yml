@@ -1,0 +1,24 @@
+server:
+  port: 8080
+  tomcat:
+    uri-encoding: UTF-8
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.163.3:3306/all_here?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&failOverReadOnly=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: 1qaz@WSX
+  servlet:
+    multipart:
+      max-file-size: 50MB
+mybatis:
+  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+logging:
+  path: D:\temp\allhere\log\ah.log
+  level:
+    com.qiling.crms: info
+
+custom:
+  file:
+    path: D:\temp\crms\file\

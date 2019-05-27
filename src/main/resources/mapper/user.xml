@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ht.allhere.dao.UserDao">
+    <resultMap id="BaseResultMap" type="User">
+        <result column="name" property="userName" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="All_Column">
+        id, name, password,phone,email,status
+    </sql>
+    <select id="getAllUsers" resultMap="BaseResultMap">
+        select
+        <include refid="All_Column"/>
+        from user
+    </select>
+    <select id="findUserByName" resultMap="BaseResultMap" parameterType="String">
+        select
+        <include refid="All_Column"/>
+        from user
+        where name = #{username}
+    </select>
+
+    <insert id="addUser" parameterType="User">
+        insert into user(
+          name,password,phone,email,status
+        )values(
+          #{userName,jdbcType=VARCHAR},
+          #{password,jdbcType=VARCHAR},
+          #{phone,jdbcType=VARCHAR},
+          #{email,jdbcType=VARCHAR},
+          #{status,jdbcType=INTEGER}
+        )
+    </insert>
+
+    <update id="updateUser" parameterType="User">
+        update user
+        <set>
+            <if test="userName != null">name=#{userName},</if>
+            <if test="password != null">password=#{password},</if>
+            <if test="phone != null">phone=#{phone},</if>
+            <if test="email != null">email=#{email}</if>
+            <if test="status != null">status=#{status}</if>
+        </set>
+        where id=#{id}
+    </update>
+</mapper>

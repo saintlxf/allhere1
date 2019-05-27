@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ht.allhere.dao.FileUploadDao">
+    <resultMap id="BaseResultMap" type="Law">
+        <result column="uuid_name" property="uuidName" jdbcType="VARCHAR"/>
+        <result column="original_name" property="originalName" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="All_Column">
+        uuid_name, original_name
+    </sql>
+    <select id="getFileByUUID" resultMap="BaseResultMap" parameterType="String">
+        select
+        <include refid="All_Column"/>
+        from fileUpload
+        where uuid_name = #{uuidName}
+    </select>
+    <insert id="addFile">
+        insert into laws(
+        name,type,record_time,source,content,status)
+        values(
+        #{name,jdbcType=VARCHAR},
+        #{type,jdbcType=INTEGER},
+        #{recordDate,jdbcType=DATE},
+        #{source,jdbcType=VARCHAR},
+        #{file_content_id,jdbcType=INTEGER},
+        #{status,jdbcType=INTEGER}
+        )
+    </insert>
+</mapper>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../css/bootstrap/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+<table id="userDataTable" class="table table-striped table-bordered table-hover table-condensed">
+</table>
+<script src="../js/jquery-3.4.1.js"></script>
+<script src="../js/popper.min.js"></script>
+<script src="../css/bootstrap/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script>
+    var dataTable = $('#userDataTable');
+    var loadData = function () {
+        $.ajax({
+            type:'post',
+            datatype:'text',
+            url:'/user/listAllUser',
+            //data:JSON.stringify(data),
+            contentType:'application/json',
+            success:function (data) {
+                $.each(data,function (index, obj) {
+                    var innerHtml = '<tr>';
+                    innerHtml += '<td>' + obj.userName + '</td>';
+                    innerHtml += '<td>' + obj.phone + '</td>';
+                    innerHtml += '<td>' + obj.email + '</td>';
+                    if(obj.status == 0) {
+                        innerHtml += '<td><button id="saveBtn" type="button" class="btn btn-primary" onclick="activeBtnFunction('+obj.id+')">激活</button></td>';
+                    }else if(obj.status!=9){
+                        innerHtml += '<td><button id="saveBtn" type="button" class="btn btn-primary" onclick="disableBtnFunction('+obj.id+')">禁用</button></td>';
+                    }
+                    innerHtml += '</tr>';
+                    console.log(innerHtml);
+                    dataTable.append(innerHtml);
+                })
+            }
+        });
+    }
+    var activeBtnFunction = function (id) {
+        var subdata = {
+            "id":id
+        };
+        console.log(subdata);
+        $.ajax({
+            type: 'post',
+            datatype: 'text',
+            url: '/user/activeUser',
+            data:JSON.stringify(subdata),
+            contentType: 'application/json',
+            success: function (data) {
+                reLoadData();
+            }
+        });
+    }
+    var disableBtnFunction = function (id) {
+        var subdata = {
+            "id":id
+        };
+        console.log(subdata);
+        $.ajax({
+            type: 'post',
+            datatype: 'text',
+            url: '/user/disableUser',
+            data:JSON.stringify(subdata),
+            contentType: 'application/json',
+            success: function (data) {
+                reLoadData();
+            }
+        });
+    }
+    loadData();
+    var reLoadData = function () {
+        dataTable.empty();
+        loadData();
+    }
+</script>
+</body>
+</html>

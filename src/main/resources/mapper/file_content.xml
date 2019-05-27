@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ht.allhere.dao.FileContentDao">
+    <resultMap id="BaseResultMap" type="FileContent">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="All_Column">
+        id, content
+    </sql>
+    <select id="getAllContentById" resultMap="BaseResultMap">
+        select
+        <include refid="All_Column"/>
+        from file_content
+    </select>
+
+    <insert id="addContentAndGetId" parameterType="FileContent" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into file_content(
+          content
+        )
+        values(
+          #{content,jdbcType=VARCHAR}
+        )
+    </insert>
+</mapper>

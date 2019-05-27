@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../css/bootstrap/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script type="text/javascript" charset="utf-8" src="../js/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../js/ueditor/ueditor.all.min.js"> </script>
+    <script type="text/javascript" charset="utf-8" src="../js/ueditor/lang/zh-cn/zh-cn.js"></script>
+
+</head>
+<body>
+    <div>
+        <div class="input-group mb-2">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">法律法规名称</span>
+            </div>
+            <input id="name" type="text" class="form-control" placeholder="法律法规名称" aria-label="Username" aria-describedby="basic-addon1">
+        </div>
+        <div class="input-group mb-2">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="lawTypeSelect">类型</label>
+            </div>
+            <select class="custom-select" id="lawTypeSelect">
+                <option selected>选择...</option>
+
+            </select>
+        </div>
+        <div class="input-group mb-2">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon2">发布日期</span>
+            </div>
+            <input id="recordDate" type="text" class="form-control" placeholder="yyyy-MM-dd" aria-label="Username" aria-describedby="basic-addon2">
+        </div>
+        <div class="input-group mb-2">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon3">来源</span>
+            </div>
+            <input id="source" type="text" class="form-control" placeholder="来源" aria-label="Username" aria-describedby="basic-addon3">
+        </div>
+        <textarea id="law_editor" type="text/plain" style="width:1024px;height:500px;"></textarea>
+    </div>
+    <button id="saveBtn" type="button" class="btn btn-primary">保存</button>
+
+    <script src="../js/jquery-3.4.1.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../css/bootstrap/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script>
+        var ue = UE.getEditor('law_editor');
+        var loadLawType = function () {
+            $.ajax({
+                type:'get',
+                datatype:'text',
+                url:'/laws/listAllLawType',
+                success:function (data) {
+                    $.each(data,function (index, obj) {
+                        var innerOption = '<option value="'+obj.id+'">'+obj.name+'</option>';
+                        $('#lawTypeSelect').append(innerOption);
+                    })
+                }
+            });
+        }
+        loadLawType();
+        $('#saveBtn').click(function () {
+            $(this).attr('disabled','disabled');
+            var data = {
+                "name":$('#name').val(),
+                "type":$('#lawTypeSelect').val(),
+                "recordDate":$('#recordDate').val(),
+                "source":$('#source').val(),
+                "content":ue.getContent()
+            }
+            $.ajax({
+                type:'post',
+                datatype:'text',
+                url:'/laws/saveLaw',
+                data:JSON.stringify(data),
+                contentType:'application/json',
+                success:function (data) {
+                    //if(data.code==1){
+                        console.log(data)
+                    //}
+                }
+            });
+        })
+    </script>
+</body>
+</html>
